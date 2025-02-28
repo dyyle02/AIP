@@ -1,0 +1,155 @@
+from machine import Pin
+from neopixel import NeoPixel
+from time import *
+
+print('Assignment #3 Example')
+
+# configure digital input on pin 1:
+in1 = Pin(1, Pin.IN, Pin.PULL_UP)
+in1_val_last = 1
+
+# configure NeoPixel output on pin 7 for 30 pixels:
+NUM_PIXELS = 30
+np = NeoPixel(Pin(7), NUM_PIXELS)
+button_held = False 
+
+program_state = 'START'
+
+# get current running time in milliseconds:
+state_start_time = ticks_ms()
+
+while True:
+    
+    current_time = ticks_ms()
+
+    # Check if the button is pressed
+    if in1.value() == 0:  # Button is pressed
+        if in1_val_last == 1:  # Last state was unpressed
+            button_press_time = current_time  # Record press time
+            button_held = False  # Reset the hold flag
+
+            # Reset the just_entered_waiting flag on any new press
+            just_entered_waiting = False
+
+            if program_state == 'RED':
+                program_state = 'GREEN'
+            elif program_state == 'GREEN':
+                program_state = 'BLUE'
+            elif program_state == 'BLUE':
+                program_state = 'WAITING'
+                just_entered_waiting = True  # Set the flag to prevent immediate RED
+            elif program_state == 'RAINBOW':
+                program_state = 'WAITING'
+                just_entered_waiting = True
+                state_start_time = ticks_ms()
+
+            print('program_state =', program_state)
+
+        # Check if the button has been held for 5 seconds
+        if ticks_ms() - button_press_time >= 5000:
+            program_state = 'RAINBOW'
+            button_held = True  # Mark as held to prevent short press logic
+            just_entered_waiting = False  # Ensure we don't block re-entering RED later
+            print('program_state =', program_state)
+
+    else:  # Button is released
+        if in1_val_last == 0:  # Last state was pressed
+            # Only trigger RED if not held for 5 seconds AND we are in WAITING 
+            # AND didn't just enter WAITING from BLUE
+            if not button_held and program_state == 'WAITING' and not just_entered_waiting:
+                program_state = 'RED'
+                print('program_state =', program_state)
+
+    # update the last input value:
+    in1_val_last = in1.value()
+        
+    if program_state == 'START':
+        
+        # set all pixels to black color:
+        for i in range(NUM_PIXELS):
+            np[i] = (0, 0, 0)
+        np.write()
+        sleep(2)  # wait 2 seconds
+       
+        program_state = 'WAITING'
+        print('program_state = WAITING')
+       
+    elif program_state == 'WAITING':
+        
+        for i in range(NUM_PIXELS):
+            np[i] = (255, 255, 255)
+        np.write()
+        sleep_ms(100)
+        
+    elif program_state == 'RED':
+       
+        for n in range(100):
+            for i in range(NUM_PIXELS):
+                np[i] = (n, 0, 0)
+            sleep_ms(5)
+            np.write()
+        for n in range(100):
+            for i in range(NUM_PIXELS):
+                np[i] = (100 - n, 0, 0)
+            sleep_ms(5)
+            np.write()
+       
+    elif program_state == 'GREEN':
+        
+        for i in range(NUM_PIXELS):
+            np[i] = (0,255,0)
+        sleep_ms(500)
+        np.write()
+        
+        for i in range(NUM_PIXELS):
+            np[i] = (0,0,0)
+        sleep_ms(500)
+        np.write()
+    
+    elif program_state == 'BLUE':
+        
+        for i in range(NUM_PIXELS):
+            np[i] = (0,0,255)
+            sleep_ms(50)
+            np.write()
+        
+        for i in range(NUM_PIXELS):
+            np[i] = (0,0,0)
+            sleep_ms(50)
+            np.write()
+            
+    elif program_state == 'RAINBOW':
+        
+        for j in range(255):
+            for i in range(NUM_PIXELS):
+              np[i] = (255,0+j,0) #red to yellow
+            np.write()
+            sleep_ms(1)
+        for j in range(255):
+            for i in range(NUM_PIXELS):
+              np[i] = (255-j,255,0) #yellow to green
+            np.write()
+            sleep_ms(1)
+        for j in range(255):
+            for i in range(NUM_PIXELS):
+              np[i] = (0,255-j,0+j) #green to blue
+            np.write()
+            sleep_ms(1)
+        for j in range(255):
+            for i in range(NUM_PIXELS):
+              np[i] = (0+j,0,255) #blue to purple
+            np.write()
+            sleep_ms(1)
+        for j in range(255):
+            for i in range(NUM_PIXELS):
+              np[i] = (255,0,255-j) #purple to red
+            np.write()
+            sleep_ms(1)
+            
+    else:
+        program_state == 'WAITING'
+        
+    
+        
+        
+        

@@ -1,2 +1,2 @@
 # AIP
-Advanced Interactive Prototyping
+Advanced Interactive Prototyping :)
