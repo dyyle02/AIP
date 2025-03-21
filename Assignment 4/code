@@ -1,0 +1,112 @@
+import os, sys, io
+import M5
+from M5 import *
+from hardware import I2C
+from hardware import Pin
+from unit import IMUProUnit
+from time import *
+from neopixel import NeoPixel
+
+# initialize M5 hardware:
+M5.begin()
+
+# configure I2C port on pins 1 and 2:
+i2c = I2C(0, scl=Pin(1), sda=Pin(2), freq=100000)
+
+# configure IMU on I2C port:
+imu = IMUProUnit(i2c)
+
+# create NeoPixel driver on pin 7 for 30 pixel:
+NUM_PIXEL = 30
+np = NeoPixel(Pin(7), 30)
+
+# setup to count number of steps
+stepcounter = 0
+
+# setup to count number of miles
+milecounter = 0
+
+boolen_stuff = False
+
+imu_x = 0
+
+print('stepcounter||'+str(stepcounter))
+print('mile||'+str(milecounter))
+
+
+while True:
+    
+    # update M5 hardware:
+    M5.update()
+    
+    # setting values for previous inputs
+    prev_imu_x = imu_x
+    #prev_imu_y = imu_y
+    prev_stepcounter = stepcounter
+    prev_milecounter = milecounter
+    
+    # read accelerometer values from IMU:
+    imu_val = imu.get_accelerometer()
+    
+    # variables for x, y-axis acceleration:
+    imu_x = imu_val[0]
+    #imu_y = imu_val[1]
+    
+    # red, green, blue variables
+    r = 0
+    g = 0
+    b = 0
+
+    # code for when the arm is moving clockwise
+    if imu_x > -1 and imu_x < -0.8 :
+        
+        # if the previous imu_x value was out of the threshold, add to step counter
+        if boolen_stuff == False :
+            stepcounter += 1
+            
+        boolen_stuff = True
+            
+        # change color to green within threshold
+        for i in range(NUM_PIXEL) :
+            np[i] = (r, g, b)
+            b = 255
+        np.write()
+        sleep_ms(50)
+        print('stepcounter||'+str(stepcounter))
+        print('b')
+        
+
+    # code for when the arm is moving counter clockwise
+    if imu_x > 0.8 and imu_x < 1 :
+        
+        # if the previous imu_x value was out of the threshold, add to step counter
+        if boolen_stuff == True :
+            stepcounter += 1
+            
+        boolen_stuff = False
+        # change color to blue within threshold
+        for i in range(NUM_PIXEL) :
+            np[i] = (r,g,b)
+            g = 255
+        np.write()
+        sleep_ms(50)
+        print('stepcounter||'+str(stepcounter))
+        print('g')
+        
+    # code to calculate for every 20 steps, add 0.1 to mile counter
+    if stepcounter != 0 and stepcounter % 20 == 0 :
+        if prev_stepcounter % 20 != 0 :
+            milecounter +=0.1
+            print('mile||'+str(milecounter))
+            
+    # code to calculate for every 0.5 miles, turn red 
+    if milecounter !=0 and milecounter % 0.5 == 0 :
+        if prev_milecounter % 0.5 != 0 :
+            print('you ran half a mile!')
+            for i in range (NUM_PIXEL):
+                np[i] = (r,0,0)
+                r = 255
+            np.write()
+            sleep_ms(50)
+        
+        
