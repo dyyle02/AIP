@@ -6,7 +6,7 @@ For assignment 4, I created a bracelet that tracks how many steps you take. When
 <img src="state diagram.jpg" width="500">
   
 ### State Diagram
-<img src="state diagram assignment 3.jpg">  
+<img src="state diagram.jpg">  
 
 The state diagram at first looks complex, but using the device is quite simple. When you start it, it will first turn blue or green depending on where you hand is. How it works is that when the bracelet detects one side that is pointing to the ground, it trigger 2 things, first it will add 1 to the step counter, then it will turn blue or green and vise versa for the other side of the bracelet. This will happen each time you move your arm either in front of you or behind you. The step counter will be in the background adding up. Once it hits 20 steps, it will calculate that many steps as 0.1 miles and will add that to the mile counter. This will happen forever, but when you hit 0.5 miles, the bracelet will then turn red. Moving to the digital side, the hidden data of steps and miles will appear on the app. The app will also show the color of the bracelet when its green or blue.
 
