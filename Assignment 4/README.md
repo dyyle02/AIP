@@ -1,85 +1,81 @@
 ### Assignment #4
 
 ### Intro
-For assignment 3, I created a light box with a button on the top to change 5 different light settings. The concept at first was a lamp with 3 different light settings, but when making the physical object, a light box was easier to make than the lamp shown in the concept drawing and it still hides the cables "mostly" which is the most important part to me.
+For assignment 4, I created a bracelet that tracks how many steps you take. When you wear the bracelet and start walking, it will count the steps you take and display them on a digital screen. If you take enough steps, then it will display how many miles you traveled based on the amount of steps. the bracelet will also light up green or blue which represents a step u took. If you traveled 0.5 miles, then the bracelet will light up red indicating you reach the half mile.
   
 <img src="IMG_6754.JPG" width="500">
   
 ### State Diagram
 <img src="state diagram assignment 3.jpg">  
 
-The state diagram shown below has a start, digital input (button), and 5 different states. When the lightbox is first turned on by code, it enters **waiting mode** which is like the first state. This state is the starting position, staying a white color while waiting for the user to change states. From waiting mode, there are 2 different states you can go from here. The first one I will show is the main loop of states. By clicking the button once, the states of the lightbox changes to **red mode**. This state makes the light pulse a red color. By clicking the button once again, you can change states to the **green mode**. This state make the light flicker a green color. Clicking the button once more will change it to the **blue mode**. This state is the last state in the loop and it turns each LED blue one by one like a wave. All these states loop the effect until the button is pressed and when clicking the button once more, it comes back to the waiting mode. The final state is outside the loop of states and by holding down the button for 5 seconds, the final state will appear being **rainbow mode**. This state makes the light change colors constantly making a rainbow. by clicking the button once, you will go back to waiting state.
+The state diagram at first looks complex, but using the device is quite simple. When you start it, it will first turn blue or green depending on where you hand is. How it works is that when the bracelet detects one side that is pointing to the ground, it trigger 2 things, first it will add 1 to the step counter, then it will turn blue or green and vise versa for the other side of the bracelet. This will happen each time you move your arm either in front of you or behind you. The step counter will be in the background adding up. Once it hits 20 steps, it will calculate that many steps as 0.1 miles and will add that to the mile counter. This will happen forever, but when you hit 0.5 miles, the bracelet will then turn red. Moving to the digital side, the hidden data of steps and miles will appear on the app. The app will also show the color of the bracelet when its green or blue.
 
 ### Hardware
-* LED Strip (The light)
-* ATOMS3 (The processor that talks to the light)
-* USB4 Cord (connects the Lightbox to the computer)
+* LED Strip
+* ATOMS3
+* USB4 Cord
+* imu PRO Unit (For collecting movement data)
 <img src="IMG_6752.JPG" width="500">
 
 ### Firmware
 ```python
-    if in1.value() == 0:  # Button is pressed
-        if in1_val_last == 1:  # Last state was unpressed
-            button_press_time = current_time  # Record press time
-            button_held = False  # Reset the hold flag
+    # setting values for previous inputs
+    prev_stepcounter = stepcounter
+    prev_milecounter = milecounter
 ```
-This part of the code tells the button to change states when pressed and records how long the press is when pushing down on the button
+This part of the code gives me the variables to be able to calculate the step and mile counter without it continuously counting
 
 ```python
-if program_state == 'RED':
-                program_state = 'GREEN'
-            elif program_state == 'GREEN':
-                program_state = 'BLUE'
-            elif program_state == 'BLUE':
-                program_state = 'WAITING'
-                just_entered_waiting = True  # Set the flag to prevent immediate RED
-            elif program_state == 'RAINBOW':
-                program_state = 'WAITING'
-                just_entered_waiting = True
-                state_start_time = ticks_ms()
-
-            print('program_state =', program_state)
+    # code for when the arm is moving clockwise
+    if imu_x > -1 and imu_x < -0.8 :
+        
+        # if the previous imu_x value was out of the threshold, add to step counter
+        if boolen_stuff == False :
+            stepcounter += 1
+            
+        boolen_stuff = True
+            
+        # change color to green within threshold
+        for i in range(NUM_PIXEL) :
+            np[i] = (r, g, b)
+            b = 255
+        np.write()
+        sleep_ms(50)
+        print('stepcounter||'+str(stepcounter))
+        print('b')
 ```
-This part of the code tells the button what state it should go to next when in each of the states
-
-```python
- if ticks_ms() - button_press_time >= 5000:
-            program_state = 'RAINBOW'
-            button_held = True  # Mark as held to prevent short press logic
-            just_entered_waiting = False  # Ensure we don't block re-entering RED later
-            print('program_state =', program_state)
-```
-This part of the code tells the button how to enter the **rainbow mode** (by holding the button down for 5 secs)
+This part of the code tells me when the x-axis of the imu pro unit reaches between -0.8 and -1, the bracelet will turn blue. This is also when the code would add 1 to the step counter. There is also a boolean value for when the x-axis bounces around the edge of the threshold, the step counter won't count unless the x-axis was in the previous threshold before
 
 ```python
-    else:  # Button is released
-        if in1_val_last == 0:  # Last state was pressed
-            # Only trigger RED if not held for 5 seconds AND we are in WAITING 
-            # AND didn't just enter WAITING from BLUE
-            if not button_held and program_state == 'WAITING' and not just_entered_waiting:
-                program_state = 'RED'
-                print('program_state =', program_state)
+  # code to calculate for every 20 steps, add 0.1 to mile counter
+  if stepcounter != 0 and stepcounter % 20 == 0 :
+    if prev_stepcounter % 20 != 0 :
+      milecounter +=0.1
+      print('mile||'+str(milecounter))
 ```
-This part of the code tells what the button should do when in **waiting mode**. Waiting mode is treated differently than the other states because it has 2 different states to go to. Here the code is specifically telling the button to not instantly go to **red mode** when the button is pressed because it needs to record how long the press is to go to **rainbow mode**.
+This part of the code calculates for every 20 steps, add 0.1 to the mile counter.
+
+```python
+    # code to calculate for every 0.5 miles, turn red 
+    if milecounter !=0 and milecounter % 0.5 == 0 :
+        if prev_milecounter % 0.5 != 0 :
+            print('you ran half a mile!')
+            for i in range (NUM_PIXEL):
+                np[i] = (r,0,0)
+                r = 255
+            np.write()
+            sleep_ms(50)
+```
+This part of the code calculates when the mile counter hits 0.5, the bracelet will turn red indicating you ran half a mile.
 
 ### Physical Components
-All of the components when making the lightbox is made of paper and tape. There are 3 components to the lightbox which is the box, the button, and the cover.
-  
-- **Box**
-  
-The box holds all the hardware and the button.
-  
-- **Button**
-  
-The button consists of folded paper, a long cylinder made of paper, and 2 copper tape. The folded paper is used so that when you push down on the long cylinder that is attached to the folded paper, the 2 copper tape which is taped to both ends of the folded paper is pushed in together making a wire connection. This acts as a button for the lightbox.
-  
-- **Cover**
-  
-Lastl,y the cover is a circular top that covers the box with a hole on top for the button to come out of.
+The bracelet is made of paper and tape. There is only 1 physical component which is the bracelet. It holds all the hardware.
 
+### Digital Components
+There is an app that talks to the bracelet since you can't see how many steps you take on the bracelet.
 
 ### Project Outcome
-The lightbox came out a little different than the concept drawing, but it came out great. I managed to hide all the hardware within the lightbox except the USB4 cord of course and the code works most of the time. If I was able to work on this more, I would clean out the paperwork and also tweak the code a little to make the state changes more smooth.
+The bracelet was surprisingly a little more difficult than the light box, but overall came out fine. The coding, even though it was shorter, was more complex and I took more time to figure it out. As for the physical object, it was relatively easy since it was made of paper. If I was able to put more work into it, I would change how the app looks and use better material for the bracelet than paper.
 
 <img src="IMG_6747.JPG">
 
