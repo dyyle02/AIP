@@ -3,7 +3,7 @@
 ### Intro
 For assignment 4, I created a bracelet that tracks how many steps you take. When you wear the bracelet and start walking, it will count the steps you take and display them on a digital screen. If you take enough steps, then it will display how many miles you traveled based on the amount of steps. the bracelet will also light up green or blue which represents a step u took. If you traveled 0.5 miles, then the bracelet will light up red indicating you reach the half mile.
   
-<img src="IMG_6754.JPG" width="500">
+<img src="state diagram.jpg" width="500">
   
 ### State Diagram
 <img src="state diagram assignment 3.jpg">  
