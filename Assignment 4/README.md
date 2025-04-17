@@ -3,7 +3,7 @@
 ### Intro
 For assignment 4, I created a bracelet that tracks how many steps you take. When you wear the bracelet and start walking, it will count the steps you take and display them on a digital screen. If you take enough steps, then it will display how many miles you traveled based on the amount of steps. the bracelet will also light up green or blue which represents a step u took. If you traveled 0.5 miles, then the bracelet will light up red indicating you reach the half mile.
   
-<img src="state diagram.jpg" width="500">
+<img src="sketch.JPG" width="500">
   
 ### State Diagram
 <img src="state diagram.jpg">  
@@ -15,7 +15,7 @@ The state diagram at first looks complex, but using the device is quite simple. 
 * ATOMS3
 * USB4 Cord
 * imu PRO Unit (For collecting movement data)
-<img src="IMG_6752.JPG" width="500">
+<img src="phsyical components.JPG" width="500">
 
 ### Firmware
 ```python
@@ -72,12 +72,14 @@ This part of the code calculates when the mile counter hits 0.5, the bracelet wi
 The bracelet is made of paper and tape. There is only 1 physical component which is the bracelet. It holds all the hardware.
 
 ### Digital Components
-There is an app that talks to the bracelet since you can't see how many steps you take on the bracelet.
+There is an app that talks to the bracelet since you can't see how many steps you take on the bracelet. It tracks how many steps taken, how many miles traveled, and the current color of the bracelet.
+
+<img src="Screenshot 2025-04-17 155425.jpg">
 
 ### Project Outcome
 The bracelet was surprisingly a little more difficult than the light box, but overall came out fine. The coding, even though it was shorter, was more complex and I took more time to figure it out. As for the physical object, it was relatively easy since it was made of paper. If I was able to put more work into it, I would change how the app looks and use better material for the bracelet than paper.
 
-<img src="IMG_6747.JPG">
+<img src="bracelet shot.JPG">
 
 **Video**
-https://drive.google.com/file/d/1E2hmnnzSuAAQhJjo_V_JV9wVQgR2nl_e/view?usp=drive_link
+[https://drive.google.com/file/d/1E2hmnnzSuAAQhJjo_V_JV9wVQgR2nl_e/view?usp=drive_link](https://drive.google.com/file/d/1cHE_N5k8_pT94QdLVcvPhmQyyIMAW7tL/view?usp=sharing)
