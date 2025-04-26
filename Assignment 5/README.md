@@ -1,6 +1,6 @@
 ## Introduction   
 
-Provide a description of your initial project idea and include images of the concept sketches that you created in Part 1 of this assignment.  Explain the context and use case for the interactive physical prototype you've created (such as your home, school, city street, nature) as well as its intended audience. 
+Taking inspiration from claw machines and gacha games (games that rely on randomized in-game transactions), I've created a miniature claw machine that works with the phone. Using physical controls from claw machines and the interactiveness of digital games, you can take this prototype anywhere and satisfy your arcade needs. People who love to go to the arcade will love a portable version of their interest and play whenever and wherever without needing to go to the arcade. The phone slips into the product and you can use the controls to control the claw and grab as many plushies as you want.  
 
 ## Implementation   
 
