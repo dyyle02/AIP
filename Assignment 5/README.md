@@ -201,7 +201,7 @@ This is the code that executes tilting left and right. If the prototype is tilte
 
 ### Software   
 
-<img src="Protopie.JPG">
+<img src="Protopie.jpg">
 
 This project utilizes Protopie for all the screens the phone will show.
 
@@ -209,7 +209,7 @@ This project utilizes Protopie for all the screens the phone will show.
 
 These are all the assets I used in Protopie to create the game. All graphics were created by me except the crane itself.
 
-<img src="Protopie receive.JPG">
+<img src="Protopie receive.jpg">
 
 By using many receive triggers, I take what the code prints and manipulate the assets to move and change based on what the user is doing. Also, if the code prints a value, then I create a variable in Protopie for that value to occupy.
 
@@ -217,7 +217,7 @@ By using many receive triggers, I take what the code prints and manipulate the a
 
 For the AtomS3 Lite board to talk to Protopie, I needed to use Protopie Connect to connect the 2 together.
 
-<img src="Protopie connect.JPG">
+<img src="Protopie connect.jpg">
 
 On the right, you can see a bunch of numbers. These numbers are for the tilt feature, and this is what is communicated to Protopie for the plushie themselves to move in relation to your tilt.
 
