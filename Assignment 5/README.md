@@ -1,9 +1,11 @@
+<img src="beach time red logo clear">
 ## Introduction   
 
 Taking inspiration from claw machines and gacha games (games that rely on randomized in-game transactions), I've created a miniature claw machine that works with the phone. Using physical controls from claw machines and the interactiveness of digital games, you can take this prototype anywhere and satisfy your arcade needs. People who love to go to the arcade will love a portable version of their interest and play whenever and wherever without needing to go to the arcade. The phone slips into the product and you can use the controls to control the claw and grab as many plushies as you want.  
 
 ## Implementation   
 
+<img src="IMG_6754.JPG" width="500">
 Explain your process of prototype development including all applicable aspects such as hardware (electronics), firmware (MicroPython code), software (ProtoPie, HTML/CSS/JavaScript or other code), integrations (Adafruit IO, IFTTT, etc.), enclosure and mechanical design.  
 
 In general, think of your audience as someone new trying to learn how to make your project and make sure to cover anything helpful to explain how it functions.  Use a separate subheader for each part:
