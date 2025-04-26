@@ -1,0 +1,197 @@
+# for rainbow color on neopixel:
+def hsv_to_rgb(h, s, v):
+    if s == 0.0:
+        r = g = b = int(v * 255)
+        return r, g, b
+    i = int(h * 6.0)
+    f = (h * 6.0) - i
+    p = int(255 * v * (1.0 - s))
+    q = int(255 * v * (1.0 - s * f))
+    t = int(255 * v * (1.0 - s * (1.0 - f)))
+    v = int(v * 255)
+    i %= 6
+    if i == 0:
+        return v, t, p
+    if i == 1:
+        return q, v, p
+    if i == 2:
+        return p, v, t
+    if i == 3:
+        return p, q, v
+    if i == 4:
+        return t, p, v
+    if i == 5:
+        return v, p, q
+    
+
+
+import os, sys, io, random
+import M5
+from M5 import *
+from hardware import I2C
+from hardware import Pin, ADC
+from unit import IMUProUnit
+from time import *
+from neopixel import NeoPixel
+
+# initialize M5 hardware:
+M5.begin()
+
+# angle sensor setup:
+analog_pin = Pin(6, 5) #configure dial/angle sensor pin
+adc = ADC(analog_pin) #configure ADC on an input pin
+adc.atten(ADC.ATTN_11DB) #configure the ADC sensitivity
+
+# imu setup:
+i2c = I2C(0, scl=Pin(1), sda=Pin(2), freq=100000) #configure I2C port on pins 1 and 2:
+imu = IMUProUnit(i2c) #configure IMU on I2C port:
+
+# atom button setup:
+btn = Pin(41, Pin.IN) #configure pin 41 as input (built-in button on AtomS3 Lite)
+
+# neopixel setup:
+NUM_PIXEL = 30
+np = NeoPixel(Pin(38), NUM_PIXEL) #create NeoPixel driver on pin for 38 pixel
+
+# dual button pin setup:
+blue_btn = Pin(8, Pin.IN, Pin.PULL_UP)
+red_btn = Pin(7, Pin.IN, Pin.PULL_UP)
+
+x_move_counter = 0
+analog_val = 0
+rate_counter = 0.5
+plushie_counter = 0
+
+for i in range(NUM_PIXEL):
+    np[i] = (0, 0, 0)
+    np.write()
+
+while True:
+    
+    # update M5 hardware:
+    M5.update()
+    
+    # dial settup :
+    analog_val = adc.read() #read the ADC value
+    sleep_ms(50)
+    
+    # imu settup :
+    imu_val = imu.get_accelerometer() #read accelerometer values from IMU
+    imu_x = imu_val[0] #variables for x-axis acceleration
+    #imu_y = imu_val[1] #variables for y-axis acceleration
+       
+    # move right
+    if analog_val >= 0 and analog_val < 1000:
+        x_move_counter +=1
+        for i in range(NUM_PIXEL):
+            np[i] = (255, 0, 255)
+        np.write()
+        sleep_ms(50)
+        print('move_right||'+str(x_move_counter))
+        
+    else:
+        for i in range(NUM_PIXEL):
+            np[i] = (255, 255, 255)            
+
+    # move left
+    if analog_val > 3000 and analog_val <= 4095:
+        x_move_counter -=1
+        for i in range(NUM_PIXEL):
+            np[i] = (255,255,0)
+        np.write()
+        sleep_ms(50)
+        print('move_left||'+str(x_move_counter))
+        
+    else:
+        for i in range(NUM_PIXEL):
+            np[i] = (255, 255, 255)      
+                
+    # start
+    if blue_btn.value():
+        for i in range(NUM_PIXEL):
+            np[i] = (255, 255, 255)
+            
+    else:
+        print('start')
+        for i in range(NUM_PIXEL):
+            np[i] = (255, 255, 255)
+            np.write()
+            
+    # reset
+    if btn.value():
+        for i in range(NUM_PIXEL):
+            np[i] = (0, 0, 0)
+            
+    else:
+        print('reset')
+        x_move_counter = 0
+        analog_val = 0
+        rate_counter = 0.5
+        plushie_counter = 0
+        print(plushie_counter)
+        print('move_right||'+str(x_move_counter))
+        print('move_left||'+str(x_move_counter))
+        for i in range(NUM_PIXEL):
+            np[i] = (0, 0, 0)
+            np.write()
+        
+    # move down   
+    if red_btn.value():
+        for i in range(NUM_PIXEL):
+            np[i] = (255, 255, 255)
+            
+    else:
+        for i in range(NUM_PIXEL):
+            hue = i / NUM_PIXEL
+            r, g, b = hsv_to_rgb(hue, 1.0, 1.0)
+            np[i] = (r, g, b)
+        np.write()
+        sleep_ms(50)
+        print('move_down')
+        
+        sleep_ms(4000)
+        if random.random() < rate_counter:
+            print('got nothing')
+            for i in range(NUM_PIXEL):
+                np[i] = (255,0,0)
+            np.write()
+            sleep_ms(2000)
+            y_move_counter = 0
+            print('restart')
+            for i in range(NUM_PIXEL):
+                np[i] = (255,255,255)
+            np.write()
+            
+        else:
+            choice = random.choice(["got ator", "got dexx", "got pork"])
+            print(choice)
+            plushie_counter += 1
+            print('num of plushies||'+str(plushie_counter))
+            for i in range(NUM_PIXEL):
+                np[i] = (0,255,0)
+            np.write()
+            
+            sleep_ms(4000)
+            y_move_counter = 0
+            print('restart')
+            for i in range(NUM_PIXEL):
+                np[i] = (255,255,255)
+            np.write()
+            
+
+    # tilt left
+    if imu_x > -1 and imu_x < -0.3 :
+        sleep_ms(50)
+        print('tilt_num||'+str(-1))
+        choice2 = random.choice([0.1,0.2,0.3,0.4,0.5,0.6,0.7,.8,0.9])
+        rate_counter = choice2
+        
+    # tilt right
+    if imu_x < 1 and imu_x > 0.3 :
+        sleep_ms(50)
+        print('tilt_num||'+str(1))
+        choice2 = random.choice([0.1,0.2,0.3,0.4,0.5,0.6,0.7,.8,0.9])
+        rate_counter = choice2
+        
+
+
