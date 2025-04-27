@@ -219,14 +219,15 @@ For the AtomS3 Lite board to talk to Protopie, I needed to use Protopie Connect 
 
 <img src="Protopie connect.jpg">
 
-On the right, you can see a bunch of numbers. These numbers are for the tilt feature, and this is what is communicated to Protopie for the plushie themselves to move in relation to your tilt.
+On the right, you can see a bunch of numbers. These numbers are the position values of the crane. The numbers are constantly updated and printing out the value and the most recent value is where exactly the crane should be on screen.
 
-### Enclosure / Assets
+### Enclosure
 
-For the enclosure, I used cardboard and paper to tape up all the physical components into the claw machine.
+<img src="cutout.jpg">
+
+For the enclosure, I used cardboard and paper to tape up all the physical components into the claw machine. I cut out holes for the angle unit, AtomS3 Lite button, and dual button unit so it looks clean and so that you can click on them.
 
 <img src="graphics.jpg">
-<img src="cutout.jpg">
 
 After I made the prototype, I then printed out paper cut out to cover all the tape and carboard.
 
