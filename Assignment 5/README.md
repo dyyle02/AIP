@@ -41,7 +41,7 @@ This is the wiring diagram of how I used the different units and which pins I us
 
 ### Firmware   
 
-Here is some parts of the code that make the claw machine work.
+Here are some parts of the code that make the claw machine work.
 
 ``` Python  
 # initialize M5 hardware:
