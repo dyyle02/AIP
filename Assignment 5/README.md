@@ -18,7 +18,7 @@ This is the state diagram of my mini claw machine. We begin at the **start** arr
 
 ### Hardware
 
-Here is list of all the hardware components I used in my prototype.
+Here is a list of all the hardware components I used in my prototype.
 
 * **AtomS3 Lite Board**
   (The brain of the prototype communicating with all the other hardware components)
@@ -72,7 +72,7 @@ analog_val = 0
 rate_counter = 0.5
 plushie_counter = 0
 ```
-This is the code that sets up all my units and which pins they are inserted into. I also created varibales like the x_move_counter, analog_valm reate_counter, and plushie_counter. These counters help me with moving the crane a certain amount, reading the value of the angle unit, the rate at which a plushie will be grabbed or not, and how many plushies someone has grabbed.
+This is the code that sets up all my units and which pins they are inserted into. I also created variables like the x_move_counter, analog_val, rate_counter, and plushie_counter. These counters help me with moving the crane a certain amount, reading the value of the angle unit, the rate at which a plushie will be grabbed or not, and how many plushies someone has grabbed.
 
 
 ``` Python
@@ -105,7 +105,7 @@ This is the code that sets up all my units and which pins they are inserted into
             np[i] = (0, 0, 0)
             np.write()
 ```
-This is the code to start the claw machine and to reset it. By clicking the blue button, the LED will turn white and will print "start" which is communicated to Protopie to change the opacity of the start screen into the game. The reset button will change all the variables back to their inital value.
+This is the code to start the claw machine and to reset it. By clicking the blue button, the LED will turn white and will print "start" which is communicated to Protopie to change the opacity of the start screen into the game. The reset button will change all the variables back to their initial value.
 
 
 ``` Python
@@ -178,7 +178,7 @@ This is the code to move right or left. There is a threshold of how far you turn
                 np[i] = (255,255,255)
             np.write()
 ```
-This is the code for when moving the crane down to try to grab a plushie. by clicking the red button, the LED will turn into a rainbow and will print "move_down" to tell Protopie to move the crane down to the plushies. sleep_ms(4000) is telling the code to wait 4 seconds until to executes the next lines of code. After waiting 4 seconds, it will randomly pick either "got nothing" (turn the LED red and move the crane back up), or pick at random "got ator", "got dexx", or "got pork". When this happens, the LED will turn green and based on what it picks, that message tells Protopie to change the opacity of that plushie to 100% and move the crane back up. After either is picked, teh code will print "restart" which will reset the crane and opacity of any plushie.
+This is the code for when moving the crane down to try to grab a plushie. by clicking the red button, the LED will turn into a rainbow and will print "move_down" to tell Protopie to move the crane down to the plushies. sleep_ms(4000) is telling the code to wait 4 seconds until to executes the next lines of code. After waiting 4 seconds, it will randomly pick either "got nothing" (turn the LED red and move the crane back up), or pick at random "got ator", "got dexx", or "got pork". When this happens, the LED will turn green and based on what it picks, that message tells Protopie to change the opacity of that plushie to 100% and move the crane back up. After either is picked, the code will print "restart" which will reset the crane and opacity of any plushie.
 
 
 ``` Python
@@ -229,7 +229,7 @@ For the enclosure, I used cardboard and paper to tape up all the physical compon
 
 <img src="graphics.jpg">
 
-After I made the prototype, I then printed out paper cut out to cover all the tape and carboard.
+After I made the prototype, I then printed out paper cut out to cover all the tape and cardboard.
 
 ## Project outcome  
 
@@ -239,4 +239,4 @@ After all that, here is the final product.
 
 ## Conclusion  
 
-This project was actually a backup plan if my original idea did not work (it didn't). I wasn't able to spend as much time as I wanted to on this project, but it came out better than I expected. This project didn't have many difficulties, but one thing that was difficult was making the LED be a rainbow. I had to ask a friend to make a whole function just to manipulate each LED in the LED strip a different color to make the rainbow effect. Also if I had more time, I would've first not used cardboard, but laser-cut wood or acrylic for the enclosure. I would have also make a game out of how many plushies you grabbed instead of it just counting how many plushies you grabbed.
+This project was actually a backup plan if my original idea did not work (it didn't). I wasn't able to spend as much time as I wanted to on this project, but it came out better than I expected. This project didn't have many difficulties, but one thing that was difficult was making the LED be a rainbow. I had to ask a friend to make a whole function just to manipulate each LED in the LED strip a different color to make the rainbow effect. Also if I had more time, I would've first not used cardboard, but laser-cut wood or acrylic for the enclosure. I would have also made a game out of how many plushies you grabbed instead of it just counting how many plushies you grabbed.
