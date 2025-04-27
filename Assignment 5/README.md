@@ -33,7 +33,7 @@ Here is a list of all the hardware components I used in my prototype.
 
 <img src="hardware wiring.jpg">
   
-### Schematic or Wiring Diagram
+### Wiring Diagram
 
 <img src="wiring diagram.jpg">
 
